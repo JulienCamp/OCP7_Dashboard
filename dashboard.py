@@ -114,9 +114,7 @@ def main() :
             # Send a POST request to Flask API
             response = requests.post('https://ocp7flaskapi.herokuapp.com/api/prediction', json=json_data)
             # Check if the request was successful
-            st.write(response.status_code)
             if response.status_code == 200:
-                st.write("request successfull")
                 prediction_result = int(response.json()['prediction'])
                 confidence_result = float(response.json()['confidence'])
         #         # shap_values_list = response.json()['shap_values']
@@ -128,7 +126,7 @@ def main() :
                 else :
                     st.write(f":red[Le modèle a prédit 1 pour ce client avec une confiance de {round(confidence_result*100,2)}%]")
             else:
-                st.error('Prediction request failed')    
+                st.error('Prediction request failed with statut code :', response.status_code)    
                
                 
         
@@ -150,7 +148,7 @@ def main() :
             #st.write(important_features)
             df = ref_data[important_features]
 
-    #display_hists(client_index, important_features,df,y)
+            display_hists(client_index, important_features,df,y)
 
 if __name__ == '__main__':
     main()
