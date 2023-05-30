@@ -80,7 +80,7 @@ def display_hists(client_index, important_features,df,y) :
 
 def main() : 
 
-    # data_df, X, y, full_data, my_model, my_cal_model= load_data(10000)
+    data_df, X, y, full_data, my_model, my_cal_model= load_data(10000)
     # selected_id = st.selectbox("Select an ID", data_df["SK_ID_CURR"])
 
     # st.write("Id client sélectionné:", selected_id)
