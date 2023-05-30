@@ -18,17 +18,17 @@ DATA_PATH = "./data/"
 def load_data(max_rows) :
     st.write("step 1")
     train_data = joblib.load(DATA_PATH + "train_data.joblib")
+    ref_data = train_data[:max_rows,:]
+    test_data = joblib.load(DATA_PATH + "test_data.joblib")
     st.write("step 2")
-    #X_data = train_data.drop(columns=["SK_ID_CURR", "TARGET"])
-    X_data = train_data.iloc[:max_rows,:]
-    y_data = train_data.TARGET
+    X_data = test_data.iloc[:max_rows,:]
     st.write("step 3")
     my_model = joblib.load(MODELS_PATH + "best_model.joblib")
     st.write("step 4")
     my_cal_model = joblib.load(MODELS_PATH + "cal_best_model.joblib")
     st.write("step 5")
    
-    return X_data, y_data, my_model, my_cal_model
+    return X_data, my_model, my_cal_model, ref_data
     
 
 def display_shap(model, client_data) : 
@@ -84,10 +84,10 @@ def display_hists(client_index, important_features,df,y) :
 
 def main() : 
 
-    X, y, my_model, my_cal_model= load_data(10000)
-    # selected_id = st.selectbox("Select an ID", data_df["SK_ID_CURR"])
+    X, my_model, my_cal_model, ref_data= load_data(10000)
+    selected_id = st.selectbox("Select an ID", X["SK_ID_CURR"])
 
-    # st.write("Id client sélectionné:", selected_id)
+    st.write("Id client sélectionné:", selected_id)
 
     # if selected_id is not None:
     st.write("step 6")    
