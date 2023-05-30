@@ -90,10 +90,15 @@ def main() :
             "Quel modèle souhaitez vous utiliser",
             ('Modèle non calibré', 'Modèle calibré'))
         
+        default_val = float(to_predict['AMT_CREDIT'].values)
+        credit_amount = st.number_input('Montant du prêt', value=default_val)
+        to_predict['AMT_CREDIT'] = credit_amount
+
         client_index = X.loc[X["SK_ID_CURR"] == selected_id].index
         to_predict = X.loc[[client_index[0]]]
         st.write("Informations du client : ")
         st.write(to_predict)
+        
         if model_choice == 'Modèle non calibré':
             chosen_model = "default"
             model = my_model
@@ -102,7 +107,8 @@ def main() :
             model = my_cal_model
 
         json_data = {'client_id': selected_id,
-                    'model_type': chosen_model}
+                    'model_type': chosen_model,
+                    'credit_amount': credit_amount }
         
         if st.button('Predict'):
             # Send a POST request to Flask API
@@ -121,12 +127,9 @@ def main() :
                     st.write(f":blue[Le modèle a prédit 0 pour ce client avec une confiance de {round(confidence_result*100,2)}%]")
                 else :
                     st.write(f":red[Le modèle a prédit 1 pour ce client avec une confiance de {round(confidence_result*100,2)}%]")
-                st.write(f'La vraie valeur est {y[client_index[0]]}')
             else:
                 st.error('Prediction request failed')    
-                default_val = float(to_predict['AMT_CREDIT'].values)
-                credit_amount = st.number_input('Montant du prêt', value=default_val)
-        #         to_predict['AMT_CREDIT'] = credit_amount
+               
                 
         #         # Predictions
         #     # if st.button("Display Shap") :
