@@ -145,7 +145,7 @@ def main() :
         #     #st.write(important_features)
         #     df = full_data[important_features]
 
-    display_hists(client_index, important_features,df,y)
+    #display_hists(client_index, important_features,df,y)
 
 if __name__ == '__main__':
     main()
