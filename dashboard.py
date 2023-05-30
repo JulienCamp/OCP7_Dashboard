@@ -16,18 +16,15 @@ DATA_PATH = "./data/"
 
 @st.cache_data
 def load_data(max_rows) :
-    st.write("step 1")
     train_data = joblib.load(DATA_PATH + "train_data.joblib")
     ref_data = train_data.iloc[:max_rows,:]
+    
     test_data = joblib.load(DATA_PATH + "test_data.joblib")
-    st.write("step 2")
     X_data = test_data.iloc[:max_rows,:]
-    st.write("step 3")
+    
     my_model = joblib.load(MODELS_PATH + "best_model.joblib")
-    st.write("step 4")
     my_cal_model = joblib.load(MODELS_PATH + "cal_best_model.joblib")
-    st.write("step 5")
-   
+       
     return X_data, my_model, my_cal_model, ref_data
     
 
@@ -96,16 +93,17 @@ def main() :
         
         client_index = X.loc[X["SK_ID_CURR"] == selected_id].index
         to_predict = X.loc[[client_index[0]]]
-        # st.write(to_predict)
-        # if model_choice == 'Modèle non calibré':
-        #     chosen_model = "default"
-        #     model = my_model
-        # else:
-        #     chosen_model = "calibrated"
-        #     model = my_cal_model
+        st.write("Informations du client : ")
+        st.write(to_predict)
+        if model_choice == 'Modèle non calibré':
+            chosen_model = "default"
+            model = my_model
+        else:
+            chosen_model = "calibrated"
+            model = my_cal_model
 
-        # json_data = {'client_id': selected_id,
-        #             'model_type': chosen_model}
+        json_data = {'client_id': selected_id,
+                    'model_type': chosen_model}
         # if st.button('Predict'):
         #     # Send a POST request to Flask API
         #     response = requests.post('http://127.0.0.1:5000/api/prediction', json=json_data)
