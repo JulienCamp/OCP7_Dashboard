@@ -18,7 +18,7 @@ DATA_PATH = "./data/"
 def load_data(max_rows) :
     st.write("step 1")
     train_data = joblib.load(DATA_PATH + "train_data.joblib")
-    ref_data = train_data[:max_rows,:]
+    ref_data = train_data.iloc[:max_rows,:]
     test_data = joblib.load(DATA_PATH + "test_data.joblib")
     st.write("step 2")
     X_data = test_data.iloc[:max_rows,:]
@@ -88,16 +88,14 @@ def main() :
     selected_id = st.selectbox("Select an ID", X["SK_ID_CURR"])
 
     st.write("Id client sélectionné:", selected_id)
-
-    # if selected_id is not None:
-    st.write("step 6")    
-    model_choice = st.radio(
-        "Quel modèle souhaitez vous utiliser",
-        ('Modèle non calibré', 'Modèle calibré'))
-
+    if selected_id is not None:
+        st.write("step 6")    
+        model_choice = st.radio(
+            "Quel modèle souhaitez vous utiliser",
+            ('Modèle non calibré', 'Modèle calibré'))
         
-        # client_index = data_df.loc[data_df["SK_ID_CURR"] == selected_id].index
-        # to_predict = X.loc[[client_index[0]]]
+        client_index = X.loc[X["SK_ID_CURR"] == selected_id].index
+        to_predict = X.loc[[client_index[0]]]
         # st.write(to_predict)
         # if model_choice == 'Modèle non calibré':
         #     chosen_model = "default"
