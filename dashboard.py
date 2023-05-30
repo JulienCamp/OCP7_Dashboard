@@ -16,13 +16,17 @@ DATA_PATH = "./data/"
 
 @st.cache_data
 def load_data(max_rows) :
+    st.write("step 1")
     train_data = joblib.load(DATA_PATH + "train_data.joblib")
-    
+    st.write("step 2")
     X_data = train_data.drop(columns=["SK_ID_CURR", "TARGET"])
     y_data = train_data.TARGET
     data_df = train_data.iloc[:max_rows,:]
+    st.write("step 3")
     my_model = joblib.load(MODELS_PATH + "best_model.joblib")
+    st.write("step 4")
     my_cal_model = joblib.load(MODELS_PATH + "cal_best_model.joblib")
+    st.write("step 5")
    
     return data_df, X_data, y_data, train_data, my_model, my_cal_model
     
