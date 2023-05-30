@@ -80,30 +80,30 @@ def display_hists(client_index, important_features,df,y) :
 
 def main() : 
 
-    data_df, X, y, full_data, my_model, my_cal_model= load_data(10000)
-    selected_id = st.selectbox("Select an ID", data_df["SK_ID_CURR"])
+    # data_df, X, y, full_data, my_model, my_cal_model= load_data(10000)
+    # selected_id = st.selectbox("Select an ID", data_df["SK_ID_CURR"])
 
-    st.write("Id client sélectionné:", selected_id)
+    # st.write("Id client sélectionné:", selected_id)
 
-    if selected_id is not None:
+    # if selected_id is not None:
         
-        model_choice = st.radio(
-            "Quel modèle souhaitez vous utiliser",
-            ('Modèle non calibré', 'Modèle calibré'))
+    model_choice = st.radio(
+        "Quel modèle souhaitez vous utiliser",
+        ('Modèle non calibré', 'Modèle calibré'))
 
         
-        client_index = data_df.loc[data_df["SK_ID_CURR"] == selected_id].index
-        to_predict = X.loc[[client_index[0]]]
-        st.write(to_predict)
-        if model_choice == 'Modèle non calibré':
-            chosen_model = "default"
-            model = my_model
-        else:
-            chosen_model = "calibrated"
-            model = my_cal_model
+        # client_index = data_df.loc[data_df["SK_ID_CURR"] == selected_id].index
+        # to_predict = X.loc[[client_index[0]]]
+        # st.write(to_predict)
+        # if model_choice == 'Modèle non calibré':
+        #     chosen_model = "default"
+        #     model = my_model
+        # else:
+        #     chosen_model = "calibrated"
+        #     model = my_cal_model
 
-        json_data = {'client_id': selected_id,
-                    'model_type': chosen_model}
+        # json_data = {'client_id': selected_id,
+        #             'model_type': chosen_model}
         # if st.button('Predict'):
         #     # Send a POST request to Flask API
         #     response = requests.post('http://127.0.0.1:5000/api/prediction', json=json_data)
