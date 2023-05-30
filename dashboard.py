@@ -90,14 +90,15 @@ def main() :
             "Quel modèle souhaitez vous utiliser",
             ('Modèle non calibré', 'Modèle calibré'))
         
-        default_val = float(to_predict['AMT_CREDIT'].values)
-        credit_amount = st.number_input('Montant du prêt', value=default_val)
-        to_predict['AMT_CREDIT'] = credit_amount
-
+       
         client_index = X.loc[X["SK_ID_CURR"] == selected_id].index
         to_predict = X.loc[[client_index[0]]]
         st.write("Informations du client : ")
         st.write(to_predict)
+
+        default_val = float(to_predict['AMT_CREDIT'].values)
+        credit_amount = st.number_input('Montant du prêt', value=default_val)
+        to_predict['AMT_CREDIT'] = credit_amount
         
         if model_choice == 'Modèle non calibré':
             chosen_model = "default"
