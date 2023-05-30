@@ -86,7 +86,6 @@ def main() :
 
     st.write("Id client sélectionné:", selected_id)
     if selected_id is not None:
-        st.write("step 6")    
         model_choice = st.radio(
             "Quel modèle souhaitez vous utiliser",
             ('Modèle non calibré', 'Modèle calibré'))
@@ -109,6 +108,7 @@ def main() :
             # Send a POST request to Flask API
             response = requests.post('https://ocp7flaskapi.herokuapp.com/api/prediction', json=json_data)
             # Check if the request was successful
+            st.write(response.status_code)
             if response.status_code == 200:
                 st.write("request successfull")
                 prediction_result = int(response.json()['prediction'])
