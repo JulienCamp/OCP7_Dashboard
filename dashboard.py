@@ -65,7 +65,7 @@ def display_hists(client_index, important_features,df,y) :
         #st.write("client value:", client_value[0])
         if isinstance(client_value[0], str) :
             ax.tick_params(labelrotation=45)
-            #pos=find_index_by_string(xtlabels, client_value[0])
+            pos=find_index_by_string(xtlabels, client_value[0])
             ax.patches[pos].set_facecolor('red')
         else : 
             for patch in ax.patches:
@@ -111,21 +111,21 @@ def main() :
             # Check if the request was successful
             if response.status_code == 200:
                 st.write("request successfull")
-        #         prediction_result = int(response.json()['prediction'])
-        #         confidence_result = float(response.json()['confidence'])
+                prediction_result = int(response.json()['prediction'])
+                confidence_result = float(response.json()['confidence'])
         #         # shap_values_list = response.json()['shap_values']
         #         # shap_values = [np.array(arr) for arr in shap_values_list]
         #         # display_shap(shap_values)
-        #         st.success(f'Prediction Result: {prediction_result}')
-        #         if prediction_result == 0 :
-        #             st.write(f":blue[Le modèle a prédit 0 pour ce client avec une confiance de {round(confidence_result*100,2)}%]")
-        #         else :
-        #             st.write(f":red[Le modèle a prédit 1 pour ce client avec une confiance de {round(confidence_result*100,2)}%]")
-        #         st.write(f'La vraie valeur est {y[client_index[0]]}')
-        #     else:
-        #         st.error('Prediction request failed')    
-        #         default_val = float(to_predict['AMT_CREDIT'].values)
-        #         credit_amount = st.number_input('Montant du prêt', value=default_val)
+                st.success(f'Prediction Result: {prediction_result}')
+                if prediction_result == 0 :
+                    st.write(f":blue[Le modèle a prédit 0 pour ce client avec une confiance de {round(confidence_result*100,2)}%]")
+                else :
+                    st.write(f":red[Le modèle a prédit 1 pour ce client avec une confiance de {round(confidence_result*100,2)}%]")
+                st.write(f'La vraie valeur est {y[client_index[0]]}')
+            else:
+                st.error('Prediction request failed')    
+                default_val = float(to_predict['AMT_CREDIT'].values)
+                credit_amount = st.number_input('Montant du prêt', value=default_val)
         #         to_predict['AMT_CREDIT'] = credit_amount
                 
         #         # Predictions
