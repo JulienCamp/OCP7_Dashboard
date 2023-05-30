@@ -107,7 +107,7 @@ def main() :
         
         if st.button('Predict'):
             # Send a POST request to Flask API
-            response = requests.post('https://ocp7flaskapi.herokuapp.com/api/prediction', json=json_data)
+            response = requests.post('http://0.0.0.0:32853/api/prediction', json=json_data)
             # Check if the request was successful
             if response.status_code == 200:
                 st.write("request successfull")
