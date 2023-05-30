@@ -104,11 +104,13 @@ def main() :
 
         json_data = {'client_id': selected_id,
                     'model_type': chosen_model}
-        # if st.button('Predict'):
-        #     # Send a POST request to Flask API
-        #     response = requests.post('http://127.0.0.1:5000/api/prediction', json=json_data)
-        #     # Check if the request was successful
-        #     if response.status_code == 200:
+        
+        if st.button('Predict'):
+            # Send a POST request to Flask API
+            response = requests.post('https://ocp7flaskapi.herokuapp.com/api/prediction', json=json_data)
+            # Check if the request was successful
+            if response.status_code == 200:
+                st.write("request successfull")
         #         prediction_result = int(response.json()['prediction'])
         #         confidence_result = float(response.json()['confidence'])
         #         # shap_values_list = response.json()['shap_values']
