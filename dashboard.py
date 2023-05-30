@@ -82,9 +82,8 @@ def display_hists(client_index, important_features,df,y) :
 def main() : 
 
     X, my_model, my_cal_model, ref_data= load_data(10000)
-    selected_id = st.selectbox("Select an ID", X["SK_ID_CURR"])
+    selected_id = st.selectbox("Select a customer ID", X["SK_ID_CURR"])
 
-    st.write("Id client sélectionné:", selected_id)
     if selected_id is not None:
         model_choice = st.radio(
             "Quel modèle souhaitez vous utiliser",
@@ -132,24 +131,24 @@ def main() :
                 st.error('Prediction request failed')    
                
                 
-        #         # Predictions
-        #     # if st.button("Display Shap") :
-        #     features = X.columns
+        
+            # if st.button("Display Shap") :
+            features = X.drop(columns=['SK_ID_CURR']).columns
 
-        #     #Shap display
-        #     if model_choice == 'Modèle non calibré':
-        #         shap_values = display_shap(model, X.loc[[client_index[0]]])
-        #     else :
-        #         shap_values = display_shap(model.calibrated_classifiers_[0].estimator, X.loc[[client_index[0]]])
+            #Shap display
+            if model_choice == 'Modèle non calibré':
+                shap_values = display_shap(model, X.loc[[client_index[0]]])
+            else :
+                shap_values = display_shap(model.calibrated_classifiers_[0].estimator, X.loc[[client_index[0]]])
             
-        #     #Important features display
-        #     vals= np.abs(shap_values).mean(0)
-        #     feature_importance = pd.DataFrame(list(zip(features, sum(vals))), columns=['feature_name','feature_importance_vals'])
-        #     feature_importance.sort_values(by=['feature_importance_vals'], ascending=False,inplace=True)
-        #     st.write(feature_importance.head(10))
-        #     important_features = feature_importance['feature_name'].head(6).to_list()
-        #     #st.write(important_features)
-        #     df = full_data[important_features]
+            #Important features display
+            vals= np.abs(shap_values).mean(0)
+            feature_importance = pd.DataFrame(list(zip(features, sum(vals))), columns=['feature_name','feature_importance_vals'])
+            feature_importance.sort_values(by=['feature_importance_vals'], ascending=False,inplace=True)
+            st.write(feature_importance.head(10))
+            important_features = feature_importance['feature_name'].head(6).to_list()
+            #st.write(important_features)
+            df = ref_data[important_features]
 
     #display_hists(client_index, important_features,df,y)
 
