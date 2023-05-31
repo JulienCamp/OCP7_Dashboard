@@ -7,6 +7,8 @@ import requests
 import shap
 from streamlit_shap import st_shap
 import joblib
+import plotly.subplots as sp
+import plotly.graph_objects as go
 
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
@@ -76,6 +78,46 @@ def display_hists(client_index, important_features,df,y) :
     plt.tight_layout()
     plt.show()
     st.pyplot()
+    
+    index_accepted = y.loc[y == 0].index
+    accepted_df = df.loc[index_accepted]
+    
+    fig = sp.make_subplots(rows=3, cols=2, subplot_titles=important_features)
+    
+    for i, feature in enumerate(important_features):
+        row = i // 2 + 1
+        col = i % 2 + 1
+        client_value = df.loc[client_index, feature].values
+        
+        fig.add_trace(
+            go.Histogram(
+                x=accepted_df[feature],
+                name='Class 0',
+                marker_color='rgba(0, 0.5, 0, 1)'
+            ),
+            row=row,
+            col=col
+        )
+        
+        fig.add_trace(
+            go.Histogram(
+                x=[client_value[0]],
+                name='Client',
+                marker_color='red',
+                histnorm='probability density'
+            ),
+            row=row,
+            col=col
+        )
+        
+    fig.update_layout(
+        showlegend=False,
+        height=800,
+        width=1000,
+        title_text="Histograms of Important Features"
+    )
+    
+    st.plotly_chart(fig)
      
 def get_prediction(client_id, selected_model, credit_amount) :
     json_data = {'client_id': client_id,
@@ -95,7 +137,9 @@ def get_prediction(client_id, selected_model, credit_amount) :
         else :
             st.write(f":red[Le modèle a prédit 1 pour ce client avec une confiance de {round(confidence_result*100,2)}%]")
     else:
-        st.error('Prediction request failed with statut code :', response.status_code)    
+        st.error('Prediction request failed with statut code :', response.status_code)
+
+    return prediction_result, confidence_result 
 
 
 def main() : 
@@ -126,8 +170,6 @@ def main() :
             model = my_cal_model
 
         if st.button('Predict'):
-            
-
             get_prediction(selected_id,chosen_model,credit_amount)
             # if st.button("Display Shap") :
             features = X.drop(columns=['SK_ID_CURR']).columns
