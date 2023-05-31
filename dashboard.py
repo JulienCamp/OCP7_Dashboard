@@ -77,6 +77,25 @@ def display_hists(client_index, important_features,df,y) :
     plt.show()
     st.pyplot()
      
+def get_prediction(client_id, selected_model, credit_amount) :
+    json_data = {'client_id': client_id,
+                 'model_type': selected_model,
+                 'credit_amount': credit_amount}
+    
+    # Send a POST request to Flask API
+    response = requests.post('https://ocp7flaskapi.herokuapp.com/api/prediction', json=json_data)
+    
+    # Check if the request was successful
+    if response.status_code == 200:
+        prediction_result = int(response.json()['prediction'])
+        confidence_result = float(response.json()['confidence'])
+        st.success(f'Prediction Result: {prediction_result}')
+        if prediction_result == 0 :
+            st.write(f":blue[Le modèle a prédit 0 pour ce client avec une confiance de {round(confidence_result*100,2)}%]")
+        else :
+            st.write(f":red[Le modèle a prédit 1 pour ce client avec une confiance de {round(confidence_result*100,2)}%]")
+    else:
+        st.error('Prediction request failed with statut code :', response.status_code)    
 
 
 def main() : 
@@ -106,30 +125,10 @@ def main() :
             chosen_model = "calibrated"
             model = my_cal_model
 
-        json_data = {'client_id': selected_id,
-                    'model_type': chosen_model,
-                    'credit_amount': credit_amount }
-        
         if st.button('Predict'):
-            # Send a POST request to Flask API
-            response = requests.post('https://ocp7flaskapi.herokuapp.com/api/prediction', json=json_data)
-            # Check if the request was successful
-            if response.status_code == 200:
-                prediction_result = int(response.json()['prediction'])
-                confidence_result = float(response.json()['confidence'])
-        #         # shap_values_list = response.json()['shap_values']
-        #         # shap_values = [np.array(arr) for arr in shap_values_list]
-        #         # display_shap(shap_values)
-                st.success(f'Prediction Result: {prediction_result}')
-                if prediction_result == 0 :
-                    st.write(f":blue[Le modèle a prédit 0 pour ce client avec une confiance de {round(confidence_result*100,2)}%]")
-                else :
-                    st.write(f":red[Le modèle a prédit 1 pour ce client avec une confiance de {round(confidence_result*100,2)}%]")
-            else:
-                st.error('Prediction request failed with statut code :', response.status_code)    
-               
-                
-        
+            
+
+            get_prediction(selected_id,chosen_model,credit_amount)
             # if st.button("Display Shap") :
             features = X.drop(columns=['SK_ID_CURR']).columns
 
@@ -147,8 +146,8 @@ def main() :
             important_features = feature_importance['feature_name'].head(6).to_list()
             #st.write(important_features)
             df = ref_data[important_features]
-
-            display_hists(client_index, important_features,df,y)
+            y = ref_data['TARGET']
+            #display_hists(client_index, important_features,df,y)
 
 if __name__ == '__main__':
     main()
