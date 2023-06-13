@@ -1,4 +1,4 @@
-# Dashboard Streamlit de scoring déployé sur Heroku
+# Dashboard Streamlit de prédiction pour l'attribution de prêts
 
 ## Projet 7 du parcours Data Scientist OpenClassrooms
 
