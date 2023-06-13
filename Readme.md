@@ -1,6 +1,6 @@
 # Dashboard Streamlit de scoring déployé sur Heroku
 
-## Projet 7 du parcours Data Scientist
+## Projet 7 du parcours Data Scientist OpenClassrooms
 
 Un dashboard streamlit déployé sur Heroku à l'adresse suivante :
 https://ocp7streamlitapp.herokuapp.com/
