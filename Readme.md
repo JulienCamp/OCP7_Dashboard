@@ -10,5 +10,6 @@ Fonctionnalités :
 - Choix du client via ID
 - Données du client
 - Prédiction par le modèle et valeur de confiance de la prédiction via requête à l'API
+- Possibilité de modifier le montant du crédit demandé avant requête à l'API
 - Graphes Shap permettant de visualiser les features prédominantes dans la décision du modèle (global et local)
 - Histogrammes permettant de visualiser le client par rapport à l'ensemble des clients dont le prêt a été accepté sur les features utilisées pour la prédiction.
